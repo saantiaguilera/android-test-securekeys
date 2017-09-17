@@ -11,10 +11,10 @@ curl -L -o $TMP_NDK/$FILE https://dl.google.com/android/ndk/$FILE
 pushd $TMP_NDK
 chmod a+x $FILE
 ./$FILE
-mv $DIR /usr/local/android-ndk
+mv $DIR /opt/android/sdk/ndk-bundle
 popd
 
-export ANDROID_NDK=/usr/local/android-ndk
+export ANDROID_NDK=/opt/android/sdk/ndk-bundle
 
 export PATH="$PATH:$ANDROID_NDK"
 export ANDROID_NDK_HOME="$ANDROID_NDK"
