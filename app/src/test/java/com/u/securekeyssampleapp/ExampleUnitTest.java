@@ -1,4 +1,4 @@
-package com.u.securekeys;
+package com.u.securekeyssampleapp;
 
 import org.junit.Test;
 
