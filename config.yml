@@ -12,9 +12,9 @@ dependencies:
   cache_directories:
     - ~/android-ndk-$NDK_VERSION
   pre:
-    - bash ".circleci/install_ndk.sh" "$NDK_VERSION"
-    - bash ".circleci/install_cmake.sh"
-    - bash ".circleci/install_android.sh"
+    - bash "ci/install_ndk.sh" "$NDK_VERSION"
+    - bash "ci/install_cmake.sh"
+    - bash "ci/install_android.sh"
 
 test:
   override:
