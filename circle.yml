@@ -19,3 +19,5 @@ dependencies:
 test:
   override:
     - ./gradlew build --console=plain
+  post:
+    - if [ -d app/build/outputs/apk ]; then cp -r testapp/build/outputs/apk $CIRCLE_ARTIFACTS; fi
