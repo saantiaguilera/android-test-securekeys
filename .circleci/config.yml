@@ -1,42 +1,22 @@
-version: 2
-jobs:
-  build:
-    docker:
-      - image: circleci/android:api-26-alpha
+version: 1
+machine:
+  environment:
+    ANDROID_NDK: $HOME/android-ndk-r14
+    ANDROID_NDK_HOME: $ANDROID_NDK
+    PATH: $PATH:$ANDROID_NDK
+    NDK_VERSION: "r14"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+  java:
+    version: oraclejdk8
 
-    working_directory: ~/android-test-securekeys
+dependencies:
+  cache_directories:
+    - ~/android-ndk-$NDK_VERSION
+  pre:
+    - bash ".circleci/install_ndk.sh" "$NDK_VERSION"
+    - bash ".circleci/install_cmake.sh"
+    - bash ".circleci/install_android.sh"
 
-    environment:
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
-
-    steps:
-      - checkout
-
-      - run:
-          name: Install NDK
-          command: bash ".circleci/install_ndk.sh"
-
-      - run:
-          name: Install CMAKE
-          command: bash ".circleci/install_cmake.sh"
-
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-
-      - save_cache:
-          paths:
-            - ~/.gradle
-            - android-ndk-$NDK_VERSION
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-
-      - run: ./gradlew build
+test:
+  override:
+    - ./gradlew build --console=plain
